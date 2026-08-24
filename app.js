@@ -37,6 +37,14 @@ function runWelcomeIntro() {
 
 runWelcomeIntro();
 
+const welcomeModule = document.querySelector('.ios-welcome, .android-welcome');
+if (welcomeModule && 'IntersectionObserver' in window) {
+  const welcomeObserver = new IntersectionObserver(([entry]) => {
+    document.body.classList.toggle('is-welcome-offscreen', !entry.isIntersecting);
+  }, { root: document.querySelector('.mobile-content'), threshold: 0 });
+  welcomeObserver.observe(welcomeModule);
+}
+
 const performanceTrack = document.querySelector('.ios-performance-track, .android-performance-track');
 performanceTrack?.addEventListener('keydown', (event) => {
   if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;

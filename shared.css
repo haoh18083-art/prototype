@@ -206,8 +206,8 @@ h3 { font-size: 16px; line-height: 1.4; }
 .assistant-page.is-closing { display: flex; flex-direction: column; animation: assistant-out 260ms var(--ease-standard) both; pointer-events: none; }
 @keyframes assistant-in { from { opacity: 0; clip-path: circle(0 at var(--origin-x, 92%) var(--origin-y, 7%)); } to { opacity: 1; clip-path: circle(160% at var(--origin-x, 92%) var(--origin-y, 7%)); } }
 @keyframes assistant-out { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(100%); } }
-.platform-ios .mobile-frame { transition: transform 340ms var(--ease-standard), filter 340ms var(--ease-standard); }
-.platform-ios .mobile-frame.is-assistant-hidden { transform: translateX(-8%); filter: brightness(.96); pointer-events: none; }
+.platform-ios .mobile-frame { transition: transform 340ms var(--ease-standard); }
+.platform-ios .mobile-frame.is-assistant-hidden { transform: translateX(-8%); pointer-events: none; }
 .platform-ios .assistant-page { position: fixed; top: 44px; right: 0; bottom: 0; left: 0; z-index: 30; width: 100%; min-height: 0; overflow: hidden; background: var(--surface); }
 .platform-ios .assistant-page.is-visible { display: flex; animation: ios-assistant-in 340ms var(--ease-standard) both; }
 .platform-ios .assistant-page.is-closing { display: flex; animation: ios-assistant-out 280ms var(--ease-standard) both; }
@@ -370,11 +370,11 @@ body.platform-ios,
 html:has(body.platform-ios)::-webkit-scrollbar,
 body.platform-ios::-webkit-scrollbar,
 .platform-ios .mobile-content::-webkit-scrollbar { display: none; width: 0; height: 0; }
-body.platform-ios { min-height: 100vh; background: var(--shell-bg); }
+body.platform-ios { min-height: 100vh; overflow: hidden; background: var(--surface); }
 body.platform-ios:not(.ios-chat-document) { padding-top: 44px; }
 .platform-ios .ios-system-status { position: fixed; top: 0; left: 50%; z-index: 60; width: min(100%, 430px); height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 7px 20px 0; transform: translateX(-50%); color: var(--fg); background: var(--surface); font-family: var(--font-body); font-size: 12px; font-weight: 700; }
 .platform-ios .ios-system-status::after { content: ""; position: absolute; top: 9px; left: 50%; width: 110px; height: 25px; transform: translateX(-50%); border-radius: 20px; background: var(--fg); }
-.platform-ios .mobile-frame { width: min(100%, 430px); margin-inline: auto; background: var(--surface); }
+.platform-ios .mobile-frame { width: min(100%, 430px); height: calc(100dvh - 44px); min-height: 0; margin-inline: auto; overflow: hidden; background: var(--surface); }
 .platform-ios .assistant-page { right: auto; left: 50%; max-width: 430px; transform: translateX(-50%); }
 .platform-ios .ios-chat-screen { width: min(100%, 430px); margin-inline: auto; }
 .platform-ios .mobile-bottom-nav { width: min(100%, 430px); left: 50%; right: auto; transform: translateX(-50%); }
@@ -389,12 +389,14 @@ body.platform-ios:not(.ios-chat-document) { padding-top: 44px; }
 .platform-ios .ios-assistant-button svg { position: relative; width: 18px; height: 18px; stroke-width: 1.7; }
 @keyframes ios-button-gloss { 0%, 42% { transform: translateX(-68%) rotate(14deg); opacity: 0; } 54% { opacity: .9; } 72%, 100% { transform: translateX(68%) rotate(14deg); opacity: 0; } }
 .platform-ios .ios-assistant-button:active { transform: scale(.94); box-shadow: 0 1px 4px color-mix(in oklab, var(--accent), transparent 82%); }
-.platform-ios .mobile-content { padding: 2px 16px 84px; }
+.platform-ios .mobile-content { min-height: 0; overflow-x: hidden; overflow-y: auto; padding: 2px 16px 84px; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
 .platform-ios .ios-welcome { display: flex; align-items: center; gap: 12px; min-height: 124px; padding: 18px 2px 22px; }
 .platform-ios .ios-welcome-mark { width: 42px; height: 48px; flex: 0 0 auto; color: var(--fg); }
 .platform-ios .ios-welcome-mark svg { width: 42px; height: 48px; }
 .platform-ios .ios-doll-eye { transform-box: fill-box; transform-origin: center; animation: ios-doll-blink 5.8s var(--ease-standard) 1.2s infinite; }
-.platform-ios.is-playing-welcome .ios-doll-eye { animation-play-state: paused; }
+.platform-ios.is-playing-welcome .ios-doll-eye,
+.platform-ios.is-welcome-offscreen .ios-doll-eye,
+.platform-ios.is-welcome-offscreen .ios-chat-launch::before { animation-play-state: paused; }
 .platform-ios .ios-doll-eye:nth-of-type(2) { animation-delay: 1.28s; }
 @keyframes ios-doll-blink { 0%, 91%, 96%, 100% { transform: scaleY(1); } 93%, 95% { transform: scaleY(.12); } }
 .platform-ios .ios-welcome-copy { min-width: 0; flex: 1; }
@@ -499,7 +501,9 @@ body.platform-android:not(.android-chat-document) { padding-top: 31px; }
 .platform-android .android-welcome-mark { width: 42px; height: 48px; flex: 0 0 auto; color: var(--fg); }
 .platform-android .android-welcome-mark svg { width: 42px; height: 48px; }
 .platform-android .android-doll-eye { transform-box: fill-box; transform-origin: center; animation: android-doll-blink 5.8s var(--ease-standard) 1.2s infinite; }
-.platform-android.is-playing-welcome .android-doll-eye { animation-play-state: paused; }
+.platform-android.is-playing-welcome .android-doll-eye,
+.platform-android.is-welcome-offscreen .android-doll-eye,
+.platform-android.is-welcome-offscreen .android-chat-launch::before { animation-play-state: paused; }
 .platform-android .android-doll-eye:nth-of-type(2) { animation-delay: 1.28s; }
 @keyframes android-doll-blink { 0%, 91%, 96%, 100% { transform: scaleY(1); } 93%, 95% { transform: scaleY(.12); } }
 .platform-android .android-welcome-copy { min-width: 0; flex: 1; }
