@@ -210,8 +210,9 @@ h3 { font-size: 16px; line-height: 1.4; }
 .platform-ios .mobile-frame.is-assistant-hidden { transform: translateX(-8%); pointer-events: none; }
 .platform-ios .assistant-page { position: fixed; top: 44px; right: 0; bottom: 0; left: 0; z-index: 30; width: 100%; min-height: 0; overflow: hidden; background: var(--surface); }
 .platform-ios .assistant-page.is-visible { display: flex; animation: ios-assistant-in 340ms var(--ease-standard) both; }
+.platform-ios .assistant-page.is-visible.is-open { animation: none; clip-path: none; opacity: 1; transform: translateX(-50%); }
 .platform-ios .assistant-page.is-closing { display: flex; animation: ios-assistant-out 280ms var(--ease-standard) both; }
-.platform-ios .ios-chat-frame { width: 100%; height: 100%; border: 0; background: var(--surface); }
+.platform-ios .ios-chat-frame { width: 100%; height: 100%; border: 0; opacity: 1; background: var(--surface); }
 .platform-ios.ios-chat-document { min-height: 100%; overflow: hidden; background: var(--surface); }
 .platform-ios .ios-chat-screen { min-height: 100vh; display: flex; flex-direction: column; background: var(--surface); }
 .platform-ios .ios-chat-screen .assistant-header { padding-top: 8px; height: 68px; }
@@ -488,8 +489,9 @@ body.platform-android:not(.android-chat-document) { padding-top: 31px; }
 .platform-android .mobile-frame.is-assistant-hidden { transform: translateX(-8%); filter: brightness(.96); pointer-events: none; }
 .platform-android .assistant-page { position: fixed; top: 31px; right: auto; bottom: 0; left: 50%; z-index: 30; width: 100%; max-width: 412px; min-height: 0; overflow: hidden; transform: translateX(-50%); background: var(--surface); }
 .platform-android .assistant-page.is-visible { display: flex; animation: android-assistant-in 340ms var(--ease-standard) both; }
+.platform-android .assistant-page.is-visible.is-open { animation: none; clip-path: none; opacity: 1; transform: translateX(-50%); }
 .platform-android .assistant-page.is-closing { display: flex; animation: android-assistant-out 280ms var(--ease-standard) both; }
-.platform-android .android-chat-frame { width: 100%; height: 100%; border: 0; background: var(--surface); }
+.platform-android .android-chat-frame { width: 100%; height: 100%; border: 0; opacity: 1; background: var(--surface); }
 .platform-android.android-chat-document { min-height: 100%; overflow: hidden; background: var(--surface); }
 .platform-android .android-chat-screen { width: min(100%, 412px); min-height: 100vh; display: flex; flex-direction: column; margin-inline: auto; background: var(--surface); }
 @keyframes android-assistant-in { from { opacity: 0; clip-path: circle(0 at var(--origin-x, 88%) var(--origin-y, 8%)); transform: translateX(-50%) scale(.985); } to { opacity: 1; clip-path: circle(150vmax at var(--origin-x, 88%) var(--origin-y, 8%)); transform: translateX(-50%) scale(1); } }

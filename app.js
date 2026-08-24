@@ -146,6 +146,12 @@ const assistantClosers = [...document.querySelectorAll('[data-close-assistant]')
 const homePage = document.querySelector('[data-home-page]');
 let assistantTransition = 'idle';
 
+function settleAssistantOpen() {
+  if (assistantTransition !== 'opening') return;
+  assistantPages.forEach((page) => page.classList.add('is-open'));
+  assistantTransition = 'open';
+}
+
 function openAssistant(event) {
   event?.preventDefault();
   if (assistantTransition !== 'idle') return;
@@ -162,14 +168,12 @@ function openAssistant(event) {
   homePage?.setAttribute('aria-hidden', 'true');
   homePage?.classList.add('is-assistant-hidden');
   assistantPages.forEach((page) => {
-    page.classList.remove('is-closing');
+    page.classList.remove('is-closing', 'is-open');
     page.classList.add('is-visible');
     page.setAttribute('aria-hidden', 'false');
-    page.addEventListener('animationend', () => { assistantTransition = 'open'; }, { once: true });
+    page.addEventListener('animationend', settleAssistantOpen, { once: true });
   });
-  window.setTimeout(() => {
-    if (assistantTransition === 'opening') assistantTransition = 'open';
-  }, 380);
+  window.setTimeout(settleAssistantOpen, 380);
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
@@ -178,7 +182,7 @@ function closeAssistant(event) {
   if (assistantTransition === 'idle' || assistantTransition === 'closing') return;
   assistantTransition = 'closing';
   assistantPages.forEach((page) => {
-    page.classList.remove('is-visible');
+    page.classList.remove('is-visible', 'is-open');
     page.classList.add('is-closing');
     page.setAttribute('aria-hidden', 'true');
     page.addEventListener('animationend', () => {
