@@ -1,4 +1,3 @@
-/* 兼容旧路径：与 js/app.js 内容相同。 */
 /* 页面实际加载的合并脚本。请改 js/components/ 后再按同样顺序拼回这里。 */
 /* js/components/welcome.js */
 /* 跟进卡节点提前缓存，后续 follow-card.js 直接复用。 */

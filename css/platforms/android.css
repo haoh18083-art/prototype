@@ -1,0 +1,120 @@
+/* Android 与 iOS 信息架构对齐，但保留方角、较矮状态栏和首页让位动画。 */
+html:has(body.platform-android),
+body.platform-android,
+.platform-android .mobile-content { scrollbar-width: none; -ms-overflow-style: none; }
+html:has(body.platform-android)::-webkit-scrollbar,
+body.platform-android::-webkit-scrollbar,
+.platform-android .mobile-content::-webkit-scrollbar { display: none; width: 0; height: 0; }
+body.platform-android { min-height: 100vh; background: var(--shell-bg); }
+body.platform-android:not(.android-chat-document) { padding-top: 31px; }
+.platform-android .android-system-status { position: fixed; top: 0; left: 50%; z-index: 60; width: min(100%, 412px); height: 31px; display: flex; align-items: center; justify-content: space-between; padding: 6px 17px 0; transform: translateX(-50%); color: var(--fg); background: var(--surface); font-family: var(--font-body); font-size: 11px; font-weight: 600; }
+.platform-android .android-camera { position: absolute; top: 9px; left: 50%; width: 9px; height: 9px; transform: translateX(-50%); border-radius: 50%; background: var(--fg); }
+.platform-android .mobile-frame { width: min(100%, 412px); margin-inline: auto; background: var(--surface); transition: transform 340ms var(--ease-standard), filter 340ms var(--ease-standard); }
+/* 打开助手时首页左移并略微压暗；iOS 已改为不位移，这里保持原交互。 */
+.platform-android .mobile-frame.is-assistant-hidden { transform: translateX(-8%); filter: brightness(.96); pointer-events: none; }
+.platform-android .assistant-page { position: fixed; top: 31px; right: auto; bottom: 0; left: 50%; z-index: 30; width: 100%; max-width: 412px; min-height: 0; overflow: hidden; transform: translateX(-50%); background: var(--surface); }
+.platform-android .assistant-page.is-visible { display: flex; animation: android-assistant-in 340ms var(--ease-standard) both; }
+.platform-android .assistant-page.is-visible.is-open { animation: none; clip-path: none; opacity: 1; transform: translateX(-50%); }
+.platform-android .assistant-page.is-closing { display: flex; animation: android-assistant-out 280ms var(--ease-standard) both; }
+.platform-android .android-chat-frame { width: 100%; height: 100%; border: 0; opacity: 1; background: var(--surface); }
+.platform-android.android-chat-document { min-height: 100%; overflow: hidden; background: var(--surface); }
+.platform-android .android-chat-screen { width: min(100%, 412px); min-height: 100vh; display: flex; flex-direction: column; margin-inline: auto; background: var(--surface); }
+@keyframes android-assistant-in { from { opacity: 0; clip-path: circle(0 at var(--origin-x, 88%) var(--origin-y, 8%)); transform: translateX(-50%) scale(.985); } to { opacity: 1; clip-path: circle(150vmax at var(--origin-x, 88%) var(--origin-y, 8%)); transform: translateX(-50%) scale(1); } }
+@keyframes android-assistant-out { from { opacity: 1; transform: translateX(-50%); box-shadow: -12px 0 32px color-mix(in oklab, var(--fg), transparent 92%); } to { opacity: 1; transform: translateX(calc(-50% + 100%)); box-shadow: none; } }
+.platform-android .mobile-topbar { min-height: 72px; padding: 10px 18px 8px; border-bottom: 0; }
+.platform-android .mobile-greeting h1 { font-size: 24px; letter-spacing: -.04em; }
+.platform-android .mobile-content { padding: 2px 16px 82px; }
+.platform-android .android-welcome { display: flex; align-items: center; gap: 12px; min-height: 124px; padding: 18px 2px 22px; }
+.platform-android .android-welcome-mark { width: 42px; height: 48px; flex: 0 0 auto; color: var(--fg); }
+.platform-android .android-welcome-mark svg { width: 42px; height: 48px; }
+.platform-android .android-doll-eye { transform-box: fill-box; transform-origin: center; animation: android-doll-blink 5.8s var(--ease-standard) 1.2s infinite; }
+.platform-android.is-playing-welcome .android-doll-eye,
+.platform-android.is-welcome-offscreen .android-doll-eye,
+.platform-android.is-welcome-offscreen .android-chat-launch::before { animation-play-state: paused; }
+.platform-android .android-doll-eye:nth-of-type(2) { animation-delay: 1.28s; }
+@keyframes android-doll-blink { 0%, 91%, 96%, 100% { transform: scaleY(1); } 93%, 95% { transform: scaleY(.12); } }
+.platform-android .android-welcome-copy { min-width: 0; flex: 1; }
+.platform-android .android-welcome-copy [data-typewriter-line] { min-height: 1.4em; }
+.platform-android .android-welcome-copy [data-typewriter-line].is-typing::after { content: ""; display: inline-block; width: 1px; height: 1em; margin-left: 2px; vertical-align: -.12em; background: currentColor; animation: android-typewriter-caret 720ms steps(1) infinite; }
+@keyframes android-typewriter-caret { 50% { opacity: 0; } }
+.platform-android .android-welcome-copy p { color: var(--fg); font-size: 15px; line-height: 1.35; }
+.platform-android .android-welcome-copy h2 { margin-top: 3px; color: var(--fg); font-size: 15px; font-weight: 500; line-height: 1.4; letter-spacing: -.02em; }
+.platform-android .android-chat-launch { position: relative; isolation: isolate; overflow: hidden; width: 48px; height: 48px; flex: 0 0 auto; display: grid; place-items: center; border: 1px solid color-mix(in oklab, var(--accent), var(--border) 62%); border-radius: 16px; color: var(--accent); background: var(--surface); box-shadow: 0 3px 10px color-mix(in oklab, var(--accent), transparent 88%), inset 0 0 0 1px color-mix(in oklab, var(--accent), transparent 92%); }
+.platform-android .android-chat-launch::before { content: ""; position: absolute; inset: -42%; z-index: -1; background: linear-gradient(115deg, transparent 38%, color-mix(in oklab, var(--accent), white 55%) 48%, transparent 58%); transform: translateX(-68%) rotate(14deg); animation: android-button-gloss 5.6s var(--ease-standard) 1.8s infinite; }
+.platform-android .android-chat-launch::after { content: ""; position: absolute; inset: 4px; border: 1px solid color-mix(in oklab, var(--accent), transparent 78%); border-radius: 12px; pointer-events: none; }
+.platform-android .android-chat-launch svg { width: 19px; height: 19px; }
+@keyframes android-button-gloss { 0%, 42% { transform: translateX(-68%) rotate(14deg); opacity: 0; } 54% { opacity: .9; } 72%, 100% { transform: translateX(68%) rotate(14deg); opacity: 0; } }
+.platform-android .android-chat-launch:active { transform: scale(.94); }
+.platform-android .android-performance { margin: 0 -16px 28px; }
+.platform-android .android-performance-head { display: flex; align-items: baseline; justify-content: space-between; padding: 0 16px 10px; }
+.platform-android .android-performance-head h2 { font-size: 16px; font-weight: 650; letter-spacing: -.02em; }
+.platform-android .android-performance-head span { color: var(--muted); font-size: 10px; }
+.platform-android .android-performance-track { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(208px, 72vw); gap: 10px; overflow-x: auto; padding: 0 16px 8px; scroll-padding-inline: 16px; scroll-snap-type: x mandatory; overscroll-behavior-inline: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.platform-android .android-performance-track::-webkit-scrollbar { display: none; }
+.platform-android .android-performance-track:focus-visible { outline: none; }
+.platform-android .android-performance-card { min-height: 116px; display: flex; flex-direction: column; padding: 16px; scroll-snap-align: start; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
+.platform-android .android-performance-card p { color: var(--muted); font-size: 12px; }
+.platform-android .android-performance-card strong { margin-top: 10px; font-family: var(--font-mono); font-size: 26px; font-weight: 600; line-height: 1; letter-spacing: -.03em; }
+.platform-android .android-performance-card strong.is-text { font-family: var(--font-body); font-size: 20px; }
+.platform-android .android-performance-card span { margin-top: auto; color: var(--muted); font-size: 11px; }
+.platform-android .mobile-section { margin-bottom: 22px; }
+.platform-android .mobile-section .section-head { min-height: 31px; margin-bottom: 0; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.platform-android .mobile-section .section-head h2 { font-size: 16px; font-weight: 650; }
+.platform-android .mobile-section .section-head .section-count { color: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+.platform-android .mobile-follow-list { gap: 0; }
+.platform-android .mobile-follow-list .follow-card { min-height: 0; padding: 15px 30px 15px 14px; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; background: transparent; box-shadow: none; }
+.platform-android .mobile-follow-list .follow-card:hover,
+.platform-android .mobile-follow-list .follow-card.is-expanded { border-color: var(--border); transform: none; box-shadow: none; }
+.platform-android .mobile-follow-list .person-avatar,
+.platform-android .mobile-follow-list .person-company,
+.platform-android .mobile-follow-list .next-step svg,
+.platform-android .mobile-follow-list .expand-caret { display: none; }
+.platform-android .mobile-follow-list .card-person { margin-bottom: 4px; }
+.platform-android .mobile-follow-list .person-name { font-size: 14px; font-weight: 650; }
+.platform-android .mobile-follow-list .reason { color: var(--muted); font-size: 12px; line-height: 1.5; }
+.platform-android .mobile-follow-list .next-step { margin-top: 4px; font-size: 12px; font-weight: 500; }
+.platform-android .mobile-follow-list .card-link { top: 17px; right: 8px; bottom: auto; color: var(--muted); font-size: 0; font-weight: 400; }
+.platform-android .mobile-follow-list .card-link span.android-chevron { display: inline-grid; place-items: center; width: 20px; height: 24px; font-size: 0; }
+.platform-android .mobile-follow-list .card-link span.android-chevron svg { width: 9px; height: 16px; stroke-width: 1.7; }
+.platform-android .mobile-follow-list .follow-detail { margin-top: 10px; }
+.platform-android .mobile-follow-list .follow-detail-inner { padding-top: 10px; border-top: 1px solid var(--border); font-size: 11px; }
+.platform-android .mobile-follow-list .fact { padding: 0; background: transparent; font-size: 10px; }
+.platform-android .mobile-inbox { margin-top: 24px; padding: 17px 0 14px; border: 0; border-top: 1px solid var(--border); border-radius: 0; background: transparent; }
+.platform-android .mobile-inbox .inbox-header { padding-bottom: 10px; border-bottom: 0; }
+.platform-android .mobile-inbox .inbox-title { margin-bottom: 12px; }
+.platform-android .mobile-inbox .inbox-title h2 { font-size: 16px; }
+.platform-android .mobile-inbox .segmented { display: flex; width: 100%; gap: 16px; padding: 0; border-bottom: 1px solid var(--border); border-radius: 0; background: transparent; }
+.platform-android .mobile-inbox .segmented button { min-width: 0; height: 36px; flex: 0 0 auto; padding: 0 2px; border-radius: 0; color: var(--muted); background: transparent; box-shadow: none; font-size: 12px; }
+.platform-android .mobile-inbox .segmented button.is-active { color: var(--fg); background: transparent; box-shadow: inset 0 -2px 0 var(--accent); font-weight: 650; }
+.platform-android .mobile-inbox .inbox-item { border-bottom: 1px solid var(--border); }
+.platform-android .mobile-inbox .space-link { min-height: 30px; padding: 10px 0 0; font-size: 11px; }
+.platform-android .mobile-inbox .inbox-row { min-height: 64px; gap: 0; padding: 13px 0; }
+.platform-android .mobile-inbox .inbox-type { display: none; }
+.platform-android .mobile-inbox .inbox-main { padding-right: 8px; }
+.platform-android .mobile-inbox .inbox-title-line strong { font-size: 13px; font-weight: 600; }
+.platform-android .mobile-inbox .inbox-meta,
+.platform-android .mobile-inbox .inbox-time { font-size: 10px; }
+.platform-android .mobile-inbox .inbox-chevron { width: 16px; height: 16px; }
+.platform-android .mobile-inbox .inbox-detail-content { margin: 0 0 14px; padding: 12px 0 0; border: 0; border-top: 1px solid var(--border); border-radius: 0; background: transparent; }
+.platform-android .mobile-inbox .detail-tag { height: auto; padding: 0; border-radius: 0; background: transparent; font-size: 11px; }
+.platform-android .mobile-inbox .detail-copy { font-size: 12px; line-height: 1.65; }
+.platform-android .mobile-inbox .btn { min-height: 40px; padding: 0 14px; }
+.platform-android .mobile-bottom-nav { width: min(100%, 412px); height: 72px; left: 50%; right: auto; padding: 4px 14px 7px; transform: translateX(-50%); border-top: 1px solid var(--border); background: var(--surface); }
+.platform-android .bottom-nav-item { min-height: 48px; gap: 1px; border-radius: 8px; font-size: 9px; }
+.platform-android .bottom-nav-item svg { width: 18px; height: 18px; }
+.platform-android .mobile-fab { display: none; }
+.platform-android .android-chat-screen .assistant-header { height: 68px; padding: 8px 16px; }
+.platform-android .android-chat-screen .assistant-body { width: 100%; max-width: none; min-height: 0; padding: 24px 20px 20px; }
+.platform-android .android-chat-screen .back-button { width: 48px; height: 48px; border-radius: 12px; }
+.platform-android .android-chat-screen .assistant-welcome { padding-top: 8vh; }
+.platform-android .android-chat-screen .assistant-welcome h1 { font-size: 30px; letter-spacing: -.04em; }
+.platform-android .android-chat-screen .chat-input { min-height: 56px; border-radius: 16px; }
+.platform-android .android-chat-screen .send-button { width: 42px; height: 42px; border-radius: 12px; }
+@media (prefers-reduced-motion: reduce) {
+  .platform-android .android-doll-eye,
+  .platform-android .android-chat-launch::before,
+  .platform-android .android-welcome-copy [data-typewriter-line].is-typing::after { animation: none; }
+  .platform-android .mobile-frame,
+  .platform-android .assistant-page.is-visible,
+  .platform-android .assistant-page.is-closing { transition-duration: 1ms; animation-duration: 1ms; }
+}

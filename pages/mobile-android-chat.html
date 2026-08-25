@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>销售助手 · 工作对话</title>
+  <link rel="stylesheet" href="../css/shared.css">
+</head>
+<body class="platform-android android-chat-document">
+  <!-- 既可被首页 iframe 嵌入，也可单独打开 -->
+  <main class="android-chat-screen" data-od-id="android-chat-page">
+    <header class="assistant-header" data-od-id="android-chat-header">
+      <button class="back-button" type="button" aria-label="返回今日" data-chat-back><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+      <div class="assistant-heading"><strong>销售助手</strong><span>今天的工作对话</span></div>
+    </header>
+    <section class="assistant-body" data-od-id="android-chat-body">
+      <div class="assistant-welcome">
+        <p class="eyebrow">8 月 20 日 · 工作助手</p>
+        <h1>今天想先处理哪位客户？</h1>
+        <p>可以梳理跟进顺序、起草消息，也可以查询方案与销售政策。</p>
+        <div class="suggestion-row">
+          <button class="suggestion" type="button" data-chat-suggestion>按优先级总结今天 5 位客户</button>
+          <button class="suggestion" type="button" data-chat-suggestion>为华清智造起草跟进消息</button>
+        </div>
+      </div>
+      <div class="chat-input" data-od-id="android-chat-input">
+        <textarea rows="1" placeholder="问客户、记跟进或查资料" aria-label="输入问题" data-chat-field></textarea>
+        <button class="send-button" type="button" aria-label="发送" data-chat-send><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m4 4 16 8-16 8 3-8-3-8Z"/><path d="M7 12h13"/></svg></button>
+      </div>
+      <div class="chat-note" data-chat-feedback>助手会基于你的销售工作内容回答</div>
+    </section>
+  </main>
+  <script>
+    /* 嵌入时通知父页关闭 overlay；单独打开则回到 Android 首页。 */
+    const field = document.querySelector('[data-chat-field]');
+    document.querySelectorAll('[data-chat-suggestion]').forEach((button) => button.addEventListener('click', () => {
+      field.value = button.textContent.trim();
+      field.focus();
+    }));
+    document.querySelector('[data-chat-send]').addEventListener('click', () => {
+      if (!field.value.trim()) return;
+      document.querySelector('[data-chat-feedback]').textContent = '已记录问题，正在准备回答';
+      field.value = '';
+    });
+    document.querySelector('[data-chat-back]').addEventListener('click', () => {
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: 'sales-chat-close' }, '*');
+        return;
+      }
+      window.location.href = 'mobile-android.html';
+    });
+  </script>
+</body>
+</html>

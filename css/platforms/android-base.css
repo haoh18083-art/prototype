@@ -1,0 +1,8 @@
+/* Android 基础尺寸：较矮状态栏、方角按钮。细调在 android.css。 */
+.platform-android .mobile-status { height: 31px; align-items: center; padding: 7px 17px 0; }
+.platform-android .mobile-topbar { min-height: 72px; padding: 12px 18px; }
+.platform-android .mobile-content { padding-top: 18px; }
+.platform-android .mobile-inbox { border-radius: 12px; }
+.platform-android .mobile-bottom-nav { height: 80px; padding-bottom: 10px; }
+.platform-android .mobile-fab { border-radius: 16px; }
+.platform-android .assistant-header { height: 68px; padding-left: 16px; }
