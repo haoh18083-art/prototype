@@ -1,2 +1,0 @@
-/* 兼容旧路径：根目录 shared.css 转去加载拆分后的合并样式。 */
-@import url("css/shared.css");
